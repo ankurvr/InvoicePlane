@@ -99,6 +99,7 @@ class Sessions extends Base_Controller
                     'user_vat_id' => $this->input->post('vat_id'),
                     'user_tax_code' => $this->input->post('tax_code'),
                     'user_name' => $this->input->post('username'),
+                    'user_type' => 1,
                     'user_psalt' => $user_psalt,
                     'user_password' => $user_password,
                     'user_date_created' => (new DateTime())->format('Y-m-d h:m:s'),
