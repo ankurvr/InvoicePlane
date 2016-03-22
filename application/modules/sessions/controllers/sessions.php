@@ -25,8 +25,10 @@ class Sessions extends Base_Controller
 
     public function login()
     {
+        $query = $this->db->get('ip_users');
         $view_data = array(
-            'login_logo' => $this->mdl_settings->setting('login_logo')
+            'login_logo' => $this->mdl_settings->setting('login_logo'),
+            'usersCount' => $query->num_rows()
         );
 
         if ($this->input->post('btn_login')) {
@@ -65,6 +67,50 @@ class Sessions extends Base_Controller
         }
 
         $this->load->view('session_login', $view_data);
+    }
+
+    public function register()
+    {
+        $view_data = array(
+            'login_logo' => $this->mdl_settings->setting('login_logo')
+        );
+        $query = $this->db->get('ip_users');
+        if($query->num_rows() > 0 ) {
+            redirect('sessions/login');
+        }
+
+        if ($this->input->post('btn_register')) {
+
+            $this->db->where('user_email', $this->input->post('email'));
+            $query = $this->db->get('ip_users');
+            $user = $query->row();
+
+            // Check if the user exists
+            if (!empty($user)) {
+                $this->session->set_flashdata('alert_error', lang('register_error_user_exist'));
+                redirect('sessions/login');
+            } else {
+                $this->load->library('crypt');
+
+                $user_psalt = $this->crypt->salt();
+                $user_password = $this->crypt->generate_password($this->input->post('password'), $user_psalt);
+                $data_array = array(
+                    'user_email' => $this->input->post('email'),
+                    'user_vat_id' => $this->input->post('vat_id'),
+                    'user_tax_code' => $this->input->post('tax_code'),
+                    'user_name' => $this->input->post('username'),
+                    'user_psalt' => $user_psalt,
+                    'user_password' => $user_password,
+                    'user_date_created' => (new DateTime())->format('Y-m-d h:m:s'),
+                    'user_date_modified' => (new DateTime())->format('Y-m-d h:m:s'),
+                );
+                $this->db->insert('ip_users', $data_array);
+                $this->session->set_flashdata('alert_success', 'User Successfully Created..!! Please Login..!!');
+            }
+            redirect('sessions/login');
+        } else {
+            $this->load->view('session_register', $view_data);
+        }
     }
 
     public function logout()

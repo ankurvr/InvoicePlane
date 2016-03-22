@@ -49,12 +49,21 @@
         <?php if ($login_logo) { ?>
             <img src="<?php echo base_url(); ?>uploads/<?php echo $login_logo; ?>" class="login-logo img-responsive">
         <?php } else { ?>
-            <h1><?php echo lang('login'); ?></h1>
+            <h1><?php echo lang('register'); ?></h1>
         <?php } ?>
 
         <form class="form-horizontal" method="post"
               action="<?php echo site_url($this->uri->uri_string()); ?>">
 
+            <div class="form-group">
+                <div class="col-xs-12 col-sm-3">
+                    <label for="username" class="control-label"><?php echo lang('username'); ?></label>
+                </div>
+                <div class="col-xs-12 col-sm-9">
+                    <input type="text" name="username" id="username" class="form-control"
+                           placeholder="<?php echo lang('username'); ?>"<?php if (!empty($_POST['username'])) : ?> value="<?php echo $_POST['username']; ?>"<?php endif; ?>>
+                </div>
+            </div>
             <div class="form-group">
                 <div class="col-xs-12 col-sm-3">
                     <label for="email" class="control-label"><?php echo lang('email'); ?></label>
@@ -66,27 +75,43 @@
             </div>
             <div class="form-group">
                 <div class="col-xs-12 col-sm-3">
+                    <label for="username" class="control-label"><?php echo lang('tax_code_short'); ?></label>
+                </div>
+                <div class="col-xs-12 col-sm-9">
+                    <input type="text" name="tax_code" id="tax_code" class="form-control"
+                           placeholder="<?php echo lang('tax_code_short'); ?>"<?php if (!empty($_POST['tax_code'])) : ?> value="<?php echo $_POST['tax_code']; ?>"<?php endif; ?>>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12 col-sm-3">
+                    <label for="username" class="control-label"><?php echo lang('vat_id'); ?></label>
+                </div>
+                <div class="col-xs-12 col-sm-9">
+                    <input type="text" name="vat_id" id="vat_id" class="form-control"
+                           placeholder="<?php echo lang('vat_id'); ?>"<?php if (!empty($_POST['vat'])) : ?> value="<?php echo $_POST['vat']; ?>"<?php endif; ?>>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12 col-sm-3">
                     <label for="password" class="control-label"><?php echo lang('password'); ?></label>
                 </div>
                 <div class="col-xs-12 col-sm-9">
                     <input type="password" name="password" id="password" class="form-control"
-                           placeholder="<?php echo lang('password'); ?>"<?php if (!empty($_POST['password'])) : ?> value="<?php echo $_POST['password']; ?>"<?php endif; ?>>
+                           placeholder="<?php echo lang('password'); ?>"<?php if (!empty($_POST['password'])) : ?> value="<?php echo $_POST['email']; ?>"<?php endif; ?>>
                 </div>
             </div>
-
-            <input type="submit" name="btn_login" class="btn btn-block btn-primary"
-                   value="<?php echo lang('login'); ?>">
+            <input type="hidden" value="1" name="account_type">
+            <input type="submit" name="btn_register" class="btn btn-block btn-primary"
+                   value="<?php echo lang('register'); ?>">
 
         </form>
 
         <div class="text-right">
-            <?php if($usersCount == 0) { ?>
-                <small>
-                    <a href="<?php echo site_url('sessions/register'); ?>" class="text-muted">
-                        <?php echo lang('register'); ?>
-                    </a>
-                </small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <?php } ?>
+            <small>
+                <a href="<?php echo site_url('sessions/login'); ?>" class="text-muted">
+                    <?php echo lang('login'); ?>
+                </a>
+            </small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <small>
                 <a href="<?php echo site_url('sessions/passwordreset'); ?>" class="text-muted">
                     <?php echo lang('forgot_your_password'); ?>
